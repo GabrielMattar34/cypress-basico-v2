@@ -37,7 +37,7 @@ describe('Central de Atendimento ao Cliente TAT', () => {
             .should('have.value', '')
     })
 
-    it.only('exibe mensagem de erro quando o telefone se torna obrigatório mas não é preenchido antes do envio do formulário', () => {
+    it('exibe mensagem de erro quando o telefone se torna obrigatório mas não é preenchido antes do envio do formulário', () => {
         const longText = 'Teste Teste Teste Teste Teste Teste Teste Teste Teste'
         cy.get('#firstName').type('Gabriel')
         cy.get('#lastName').type('Mattar')
@@ -77,7 +77,6 @@ describe('Central de Atendimento ao Cliente TAT', () => {
 
     it('Exibe mensagem de erro ao submeter o formulário sem preencher os campos obrigatórios', () => {
         cy.get('.button').click()
-
         cy.get('.error').should('be.visible')
     })
 
@@ -116,7 +115,7 @@ describe('Central de Atendimento ao Cliente TAT', () => {
             .should('have.value', 'feedback')
     })
 
-    it('Marcacada tipo de atendimento', () => {
+    it('Marca cada tipo de atendimento', () => {
         cy.get('input[type="radio"]').should('have.length', 3)
             .each(($radio) => {
                 cy.wrap($radio).check()
@@ -131,5 +130,29 @@ describe('Central de Atendimento ao Cliente TAT', () => {
             .uncheck()
             .should('not.be.checked')
     })
+
+    it('Seleciona um arquivo da pasta fixtures', () => {
+        cy.get('#file-upload').selectFile('cypress/fixtures/example.json')
+            .should(function(input) {
+                expect(input[0].files[0].name).to.equal('example.json')
+            })
+    })
+
+    it('Seleciona um arquivo simulando um drag-and-drop', () => {
+        cy.get('input[type = "file"]').selectFile('cypress/fixtures/example.json', {action: 'drag-drop'})
+            .should(function(input) {
+                expect(input[0].files[0].name).to.equal('example.json')
+            })
+    })
+
+    it('Seleciona um arquivo utilizando uma fixture para a qual foi dada um alias', () => {
+        cy.fixture('example.json').as('sampleFile')
+        cy.get('input[type = "file"').selectFile('@sampleFile')
+        .should(function(input) {
+            expect(input[0].files[0].name).to.equal('example.json')
+        })
+    })
+
+
 
 })
