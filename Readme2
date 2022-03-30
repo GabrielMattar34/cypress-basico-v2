@@ -1,0 +1,11 @@
+Pré-requisitos
+
+Deve ter Node.js, npm e cypress instalado.
+
+Instalação
+
+Execute npm install e npm install cypress
+
+Testes
+
+Execute npx cypress open
